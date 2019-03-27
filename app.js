@@ -8,8 +8,10 @@ uploader.on('start', function(fileInfo) {
 uploader.on('stream', function(fileInfo) {
     console.log('Streaming... sent ' + fileInfo.sent + ' bytes.');
 });
+//crea un boton en el mensaje con el nombre del archivo
 uploader.on('complete', function(fileInfo) {
     console.log('Upload Complete', fileInfo);
+    socket.emit('send message', '<button  onclick="GetFile(\'' + fileInfo.name + '\')">'+fileInfo.name+'</button>');
 });
 uploader.on('error', function(err) {
     console.log('Error!', err);
@@ -18,16 +20,23 @@ uploader.on('abort', function(fileInfo) {
     console.log('Aborted: ', fileInfo);
 });
 
-form.onsubmit = function(ev) {
+//evento de click del upload
+document.getElementById("BtnUpload").onclick = function(ev) {
     ev.preventDefault();
-
     var fileEl = document.getElementById('file');
     var uploadIds = uploader.upload(fileEl, {
         data: { /* Arbitrary data... */ }
     });
+   
 
     // setTimeout(function() {
     // uploader.abort(uploadIds[0]);
     // console.log(uploader.getUploadInfo());
     // }, 1000);
 };
+//Funcion para llamar al node el parametro es el nombre del archivo
+function GetFile(name){
+   
+    //cambia la ip deacuerdo ala compu servidor
+window.open('http://10.21.6.60:3000/Archivos?archivo='+name+'');
+}

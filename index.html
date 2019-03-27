@@ -54,12 +54,13 @@
                         <textarea class="form-control" id="message"></textarea>
                         <br/>
                         <div class="container">
-                            <form id="form">
-                                <input type="file" id="file" multiple />
-                                <input type="submit" value="Upload" />
-                            </form>
+                           
+                                <input type="file" id="file" />
+                                <input type="button" value="Upload" id="BtnUpload"  />
+                                
+                            
                             <br/>
-                            <input type="submit" class="btn btn-primary" value="Enviar Mensaje">
+                            <input type="submit" class="btn btn-primary" id="BtnMensaje" value="Enviar Mensaje">
                         </div>
 
                     </div>
@@ -83,11 +84,14 @@
                 e.preventDefault();
                 socket.emit('send message', $message.val());
                 $message.val('');
+                
+                
             });
+           
             socket.on('new message', function(data) {
                 $chat.append('<div class="p-3 mb-2 bg-secondary text-white">' + data.msg + '</div>')
             });
-
+        
             $userForm.submit(function(e) {
                 e.preventDefault();
                 socket.emit('new user', $username.val(), function(data) {

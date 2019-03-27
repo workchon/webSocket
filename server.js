@@ -5,6 +5,15 @@ var io = require('socket.io').listen(server);
 var http = require('http');
 var httpServer = http.Server(app);
 var SocketIOFile = require('socket.io-file');
+var fs = require("fs");
+var path = require('path');
+var bodyParser = require('body-parser')
+
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+
 users = [];
 connection = [];
 
@@ -17,7 +26,13 @@ app.get('/', function(req, res) {
 app.get('/app.js', (req, res, next) => {
     return res.sendFile(__dirname + '/app.js');
 });
-
+//Get para descargar archivos en la pagina
+app.get('/Archivos',function(req,res){
+   
+    var file=__dirname+'/data/'+req.query.archivo;
+    res.download(file);
+    
+});
 app.get('/socket.io.js', (req, res, next) => {
     return res.sendFile(__dirname + '/node_modules/socket.io-client/dist/socket.io.js');
 });
@@ -60,9 +75,9 @@ io.sockets.on('connection', function(socket) {
         // 	document: 'data/document'
         // },
         uploadDir: 'data', // simple directory
-        accepts: ['audio/mpeg', 'audio/mp3'], // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
-        maxFileSize: 4194304, // 4 MB. default is undefined(no limit)
-        chunkSize: 10240, // default is 10240(1KB)
+         // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
+         // 4 MB. default is undefined(no limit)
+         // default is 10240(1KB)
         transmissionDelay: 0, // delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay)
         overwrite: true // overwrite file if exists, default is true.
     });
@@ -87,4 +102,6 @@ io.sockets.on('connection', function(socket) {
     function updateUsernames() {
         io.sockets.emit('get users', users);
     }
+   
+
 });

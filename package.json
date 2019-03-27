@@ -9,6 +9,7 @@
     "author": "Jesus",
     "license": "ISC",
     "dependencies": {
+        "body-parser": "^1.18.3",
         "express": "*",
         "googleapis": "^27.0.0",
         "socket.io": "*",
