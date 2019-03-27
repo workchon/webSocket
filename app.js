@@ -1,6 +1,6 @@
 var socket = io('http://localhost:3000');
 var uploader = new SocketIOFileClient(socket);
-var form = document.getElementById('form');
+var form = document.getElementById('messageForm');
 
 uploader.on('start', function(fileInfo) {
     console.log('Start uploading', fileInfo);
